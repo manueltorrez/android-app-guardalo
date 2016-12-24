@@ -1,6 +1,8 @@
 package com.gangofseven.labs.app.guardalo.UI.activities;
 
 
+import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -44,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
         topToolBar.setNavigationIcon(R.drawable.ic_action_ic_chancho);
 
         mDatabase = DatabaseUtil.getDatabase();
-
         deposits = mDatabase.getReference().child("deposits");
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -54,6 +55,15 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(new AdapterProgress());
 
         //writeNewUser(10, new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
+
+        FloatingActionButton add = (FloatingActionButton) findViewById(R.id.fab);
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MainActivity.this, AddDeposit.class);
+                startActivity(i);
+            }
+        });
 
     }
 
@@ -81,9 +91,7 @@ public class MainActivity extends AppCompatActivity {
         if(id == R.id.action_refresh){
             Toast.makeText(MainActivity.this, "Refresh App", Toast.LENGTH_LONG).show();
         }
-        if(id == R.id.action_new){
-            Toast.makeText(MainActivity.this, "Create Text", Toast.LENGTH_LONG).show();
-        }
+
         return super.onOptionsItemSelected(item);
     }
 

@@ -10,14 +10,8 @@
 
     <item android:id="@+id/action_refresh"
         android:title="@string/action_info"
-        android:icon="@android:drawable/ic_menu_view"
+        android:icon="@android:drawable/ic_menu_info_details"
         android:orderInCategory="200"
-        app:showAsAction="ifRoom" />
-
-    <item android:id="@+id/action_new"
-        android:title="@string/action_new"
-        android:icon="@android:drawable/ic_menu_add"
-        android:orderInCategory="300"
         app:showAsAction="ifRoom" />
 
 </menu>
