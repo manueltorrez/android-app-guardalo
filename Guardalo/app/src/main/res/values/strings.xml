@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Guardalo</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_info">Total</string>
+    <string name="action_new">Add</string>
+    <string name="logo_desc">App logo</string>
+    <string name="deposit_amount">Deposit amount</string>
+    <string name="deposit_date">Deposit date</string>
+</resources>

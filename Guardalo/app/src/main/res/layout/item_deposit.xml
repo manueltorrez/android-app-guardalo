@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/circleView"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:src="@drawable/coin_dollar_icon2" />
+
+            <TextView
+                android:id="@+id/deposit_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/deposit_amount"
+                android:layout_alignTop="@+id/circleView"
+                android:layout_toRightOf="@+id/circleView"
+                android:layout_marginTop="1dp"
+                android:layout_marginLeft="18dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/colorAccent"
+                android:layout_toEndOf="@+id/circleView" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/deposit_date"
+                android:id="@+id/deposit_date"
+                android:textSize="12sp"
+                android:layout_marginTop="2dp"
+                android:layout_below="@+id/deposit_amount"
+                android:layout_alignLeft="@+id/deposit_amount"
+                android:layout_alignStart="@+id/deposit_amount" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorPrimary"
+                android:layout_below="@+id/circleView"
+                android:layout_alignLeft="@+id/circleView"
+                android:layout_marginTop="8dp"
+                />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+
+
+</RelativeLayout>
