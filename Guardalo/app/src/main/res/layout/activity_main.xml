@@ -19,7 +19,6 @@
         >
     </android.support.v7.widget.Toolbar>
 
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="56dp"
@@ -40,18 +39,29 @@
         android:paddingTop="@dimen/activity_vertical_margin"
         tools:context=".MainActivity"
         android:layout_below="@+id/toolbar"
-        android:layout_marginTop="50dp">
+        android:layout_marginTop="120dp">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/list"
             android:layout_width="match_parent"
             android:scrollbars="vertical"
             android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
             android:paddingLeft="0dp"
             android:paddingRight="0dp"
             />
 
     </RelativeLayout>
+
+    <Button
+        android:text="0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/total"
+        android:layout_marginTop="70dp"
+        android:layout_below="@+id/textInputLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_weight="1"
+        style="@style/Widget.AppCompat.Button.Borderless"/>
 
 </android.support.design.widget.CoordinatorLayout>

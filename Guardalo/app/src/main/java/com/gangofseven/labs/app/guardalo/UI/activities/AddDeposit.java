@@ -15,8 +15,12 @@ import android.widget.RelativeLayout;
 import com.gangofseven.labs.app.guardalo.DatabaseUtil;
 import com.gangofseven.labs.app.guardalo.R;
 import com.gangofseven.labs.app.guardalo.models.DepositModel;
+import com.gangofseven.labs.app.guardalo.models.TotalModel;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,6 +32,7 @@ public class AddDeposit extends AppCompatActivity {
 
     private FirebaseDatabase mDatabase;
     private DatabaseReference deposits;
+    private DatabaseReference total;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,7 @@ public class AddDeposit extends AppCompatActivity {
 
         mDatabase = DatabaseUtil.getDatabase();
         deposits = mDatabase.getReference().child("deposits");
+        total = mDatabase.getReference().child("total/totalValue");
 
         add = (EditText)findViewById(R.id.deposit_amount_edit);
 
@@ -76,11 +82,25 @@ public class AddDeposit extends AppCompatActivity {
     }
 
     private void addNewDeposit(){
-        DepositModel depositModel = new DepositModel();
+        final DepositModel depositModel = new DepositModel();
         depositModel.setAmount(Float.parseFloat(add.getText().toString()));
         depositModel.setToday(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
 
         deposits.push().setValue(depositModel);
+
+        total.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                float temp = dataSnapshot.getValue(Float.class);
+                float totalTemp = temp + depositModel.getAmount();
+                total.setValue(totalTemp);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public static boolean isNullOrEmpty(String value)

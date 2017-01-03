@@ -2,15 +2,19 @@ package com.gangofseven.labs.app.guardalo.UI.activities;
 
 
 import android.content.Intent;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,8 +23,11 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.gangofseven.labs.app.guardalo.DatabaseUtil;
 import com.gangofseven.labs.app.guardalo.R;
 import com.gangofseven.labs.app.guardalo.models.DepositModel;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -33,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseDatabase mDatabase;
     private DatabaseReference deposits;
+    private DatabaseReference total;
+
+    private Button t;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,14 +55,20 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(topToolBar);
         topToolBar.setNavigationIcon(R.drawable.ic_action_ic_chancho);
 
+        t = (Button) findViewById(R.id.total);
+
         mDatabase = DatabaseUtil.getDatabase();
         deposits = mDatabase.getReference().child("deposits");
+        total = mDatabase.getReference().child("total/totalValue");
+
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         mRecyclerView = (RecyclerView) findViewById(R.id.list);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.setAdapter(new AdapterProgress());
+
+        Toast.makeText(this, "Datos cargados", Toast.LENGTH_SHORT).show();
 
         //writeNewUser(10, new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
 
@@ -64,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        updateTotal();
 
     }
 
@@ -148,12 +166,19 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void writeNewUser(float username, String email) {
-        DepositModel juanModel = new DepositModel();
-        juanModel.setAmount(username);
-        juanModel.setToday(email);
+    public void updateTotal(){
+        total.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                float totalTemp = dataSnapshot.getValue(Float.class);
+                t.setText(String.valueOf(totalTemp));
+            }
 
-        deposits.push().setValue(juanModel);
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 }
