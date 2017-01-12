@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -34,7 +35,7 @@ import java.util.Date;
 
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     private RecyclerView mRecyclerView;
 
@@ -64,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         mRecyclerView = (RecyclerView) findViewById(R.id.list);
+
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.setAdapter(new AdapterProgress());
@@ -133,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
 
                 viewHolder.amount.setText(String.valueOf(depositModel.getAmount()));
                 viewHolder.today.setText(depositModel.getToday());
+
 
 
 /*

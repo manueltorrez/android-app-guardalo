@@ -29,6 +29,7 @@ public class AddDeposit extends AppCompatActivity {
 
     private EditText add;
     private Button addB;
+    private Button delete;
 
     private FirebaseDatabase mDatabase;
     private DatabaseReference deposits;
@@ -77,6 +78,34 @@ public class AddDeposit extends AppCompatActivity {
             }
         });
 
+        delete = (Button) findViewById(R.id.delete);
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isNullOrEmpty (add.getText().toString())) {
+                    Snackbar.make (view, "Rellena el campo", Snackbar.LENGTH_LONG)
+                            .setAction("CLOSE", new View.OnClickListener(){
+                                @Override
+                                public void onClick(View view) {
+
+                                }
+                            })
+                            .show ();
+                }
+                else {
+                    withdraw();
+                    Snackbar.make (view, "Extraído exitosamente", Snackbar.LENGTH_LONG)
+                            .setAction("VOLVER", new View.OnClickListener(){
+                                @Override
+                                public void onClick(View view) {
+                                    startAgain();
+                                }
+                            })
+                            .show ();
+                }
+            }
+        });
+
 
 
     }
@@ -101,6 +130,26 @@ public class AddDeposit extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void withdraw() {
+        final DepositModel depositModel = new DepositModel();
+        depositModel.setAmount(Float.parseFloat(add.getText().toString()));
+
+        total.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                float temp = dataSnapshot.getValue(Float.class);
+                float totalTemp = temp - depositModel.getAmount();
+                total.setValue(totalTemp);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     public static boolean isNullOrEmpty(String value)

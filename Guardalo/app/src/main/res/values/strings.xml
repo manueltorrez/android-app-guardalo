@@ -7,4 +7,5 @@
     <string name="deposit_amount">Cantidad a guardar</string>
     <string name="deposit_date">Deposit date</string>
     <string name="add">Guardar</string>
+    <string name="delete">Extraer</string>
 </resources>
