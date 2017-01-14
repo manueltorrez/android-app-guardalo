@@ -10,7 +10,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity android:name=".UI.activities.MainActivity" />
         <activity
             android:name=".UI.activities.EasySplashScreenActivity"
@@ -21,12 +20,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UI.activities.AddDeposit"></activity>
+        <activity android:name=".UI.activities.AddDeposit" />
 
-        <!--
-            Defining Services
-        -->
+        <!-- Defining Services -->
 
+        <activity
+            android:name=".UI.activities.About"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_about"
+            android:theme="@style/FullscreenTheme"></activity>
     </application>
 
 </manifest>

@@ -105,11 +105,9 @@ public class MainActivity extends AppCompatActivity{
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
         if(id == R.id.action_refresh){
-            Toast.makeText(MainActivity.this, "Refresh App", Toast.LENGTH_LONG).show();
+            Intent i = new Intent(MainActivity.this, About.class);
+            startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);
