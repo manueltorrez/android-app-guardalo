@@ -32,4 +32,8 @@
         <item name="android:background">@color/black_overlay</item>
     </style>
 
+    <style name="MyParentDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:background">#66bb6a</item>
+    </style>
+
 </resources>

@@ -1,21 +1,25 @@
 package com.gangofseven.labs.app.guardalo.UI.activities;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -78,8 +82,12 @@ public class MainActivity extends AppCompatActivity{
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this, AddDeposit.class);
-                startActivity(i);
+
+                //Old activity
+                /*    Intent i = new Intent(MainActivity.this, AddDeposit.class);
+                    startActivity(i); */
+                showAlertDialog();
+
             }
         });
 
@@ -172,7 +180,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 float totalTemp = dataSnapshot.getValue(Float.class);
-                t.setText(String.valueOf(totalTemp));
+                t.setText("Total: C$"+String.valueOf(totalTemp));
             }
 
             @Override
@@ -180,6 +188,93 @@ public class MainActivity extends AppCompatActivity{
 
             }
         });
+    }
+
+    public void showAlertDialog(){
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.activity_add_deposit, null);
+        final EditText amountEdit = (EditText) dialogView.findViewById(R.id.deposit_amount_edit);
+        dialogBuilder.setView(dialogView);
+
+        dialogBuilder
+                .setCancelable(true)
+                .setPositiveButton("Guardar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        if(isNullOrEmpty(amountEdit.getText().toString())){
+                            Toast.makeText(getApplicationContext(), "Rellena el campo", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            final DepositModel depositModel = new DepositModel();
+                            depositModel.setAmount(Float.parseFloat(amountEdit.getText().toString()));
+                            depositModel.setToday(new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
+
+                            deposits.push().setValue(depositModel);
+
+                            total.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    float temp = dataSnapshot.getValue(Float.class);
+                                    float totalTemp = temp + depositModel.getAmount();
+                                    total.setValue(totalTemp);
+                                    Toast.makeText(getApplicationContext(), "Guardado correctamente", Toast.LENGTH_SHORT).show();
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    Toast.makeText(getApplicationContext(), "Error: "+databaseError, Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
+
+
+                    }
+                })
+                .setNegativeButton("Extraer",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+
+                                if(isNullOrEmpty(amountEdit.getText().toString())){
+                                    Toast.makeText(getApplicationContext(), "Rellena el campo", Toast.LENGTH_SHORT).show();
+                                }
+                                else{
+                                    final DepositModel depositModel = new DepositModel();
+                                    depositModel.setAmount(Float.parseFloat(amountEdit.getText().toString()));
+
+                                    total.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            float temp = dataSnapshot.getValue(Float.class);
+                                            float totalTemp = temp - depositModel.getAmount();
+                                            total.setValue(totalTemp);
+                                            Toast.makeText(getApplicationContext(), "Extraído correctamente", Toast.LENGTH_SHORT).show();
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+                                            Toast.makeText(getApplicationContext(), "Error: "+databaseError, Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+                                }
+
+                            }
+                        });
+
+
+        AlertDialog alertDialog = dialogBuilder.create();
+
+
+        alertDialog.show();
+    }
+
+
+    public static boolean isNullOrEmpty(String value)
+    {
+        if (value != null)
+            return value.length() == 0;
+        else
+            return true;
     }
 
 }
